@@ -5,7 +5,7 @@ This tool was originally part of Hei, but I've decided to move it out into its o
 
 ## What can it do?
 
-- You can convert or bulk images between different formats
+- You can convert or bulk convert images between different formats
 - You can extract or bulk extract obscure package formats
 - You can convert or bulk convert models between different formats
 - List the contents of obscure package formats
