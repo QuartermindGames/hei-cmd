@@ -367,7 +367,7 @@ int main( int argc, char **argv )
 	                          1, convert_model_command );
 	PlRegisterConsoleCommand( "mdlconvdir",
 	                          "Bulk convert images.",
-	                          1, bulk_convert_model_command );
+	                          2, bulk_convert_model_command );
 	PlRegisterConsoleCommand( "imgconv",
 	                          "Convert the given image. 'img_convert ./image.bmp [./out.png]'",
 	                          -1, convert_image_command );
