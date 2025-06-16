@@ -211,7 +211,7 @@ static void bulk_export_callback( const char *path, void *user )
 	PL_DELETE( tmp );
 }
 
-static void bulk_export_packages_command( unsigned int argc, char **argv )
+static void pkg_dump_all_command( unsigned int argc, char **argv )
 {
 	PLPath path;
 	snprintf( path, sizeof( path ), "%s", argv[ 1 ] );
@@ -240,7 +240,7 @@ static void list_packages_callback( const char *path, PL_UNUSED void *user )
 	PL_DELETE( tmp );
 }
 
-static void list_packages_command( PL_UNUSED unsigned int argc, char **argv )
+static void pkg_list_all_command( PL_UNUSED unsigned int argc, char **argv )
 {
 	PLPath path;
 	snprintf( path, sizeof( path ), "%s", argv[ 1 ] );
@@ -314,8 +314,12 @@ int main( int argc, char **argv )
 	/* no buffering stdout! */
 	setvbuf( stdout, NULL, _IONBF, 0 );
 
-	PlInitialize( argc, argv );
-	PlInitializeSubSystems( PL_SUBSYSTEM_IO );
+	if ( PlInitialize( argc, argv ) != PL_RESULT_SUCCESS ||
+	     PlInitializeSubSystems( PL_SUBSYSTEM_IO ) != PL_RESULT_SUCCESS )
+	{
+		printf( "Failed to initialize Hei: %s\n", PlGetError() );
+		return EXIT_FAILURE;
+	}
 
 	PlmRegisterStandardModelLoaders( PLM_MODEL_FILEFORMAT_ALL );
 
@@ -374,13 +378,14 @@ int main( int argc, char **argv )
 	PlRegisterConsoleCommand( "imgconvdir",
 	                          "Bulk convert images in the given directory. 'img_bulkconvert ./path bmp [./outpath]'",
 	                          -1, bulk_convert_images_command );
-	PlRegisterConsoleCommand( "export_packages",
+
+	PlRegisterConsoleCommand( "pkg_dump_all",
 	                          "Attempt to export from all packages found in directory. "
 	                          "<directory> <extension>",
-	                          2, bulk_export_packages_command );
-	PlRegisterConsoleCommand( "list_packages",
+	                          2, pkg_dump_all_command );
+	PlRegisterConsoleCommand( "pkg_list_all",
 	                          "Attempts to bulk list the contents from all packages found in a directory.",
-	                          2, list_packages_command );
+	                          2, pkg_list_all_command );
 
 	void asa_register_commands( void );
 	asa_register_commands();
